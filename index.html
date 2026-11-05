@@ -1,0 +1,920 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartAttend - ADUN</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f3f5f9;
+    color: #222;
+}
+
+button, input, select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+}
+
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #101c35, #174d80);
+}
+
+.login-box {
+    background: white;
+    width: 100%;
+    max-width: 420px;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 10px 35px #0003;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.logo h1 {
+    color: #174d80;
+    font-size: 28px;
+}
+
+.logo p {
+    color: #777;
+    margin-top: 6px;
+    font-size: 13px;
+}
+
+.tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 22px;
+}
+
+.tabs button {
+    flex: 1;
+    padding: 11px 5px;
+    background: #edf1f7;
+    color: #444;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.tabs button.active {
+    background: #174d80;
+    color: white;
+}
+
+label {
+    display: block;
+    margin: 15px 0 7px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+    background: white;
+}
+
+input:focus, select:focus {
+    border-color: #174d80;
+}
+
+.primary {
+    width: 100%;
+    background: #174d80;
+    color: white;
+    padding: 13px;
+    border-radius: 6px;
+    margin-top: 22px;
+}
+
+.primary:hover {
+    background: #103b63;
+}
+
+.demo {
+    background: #f0f5fb;
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 18px;
+    font-size: 12px;
+    line-height: 1.8;
+    color: #555;
+}
+
+.error {
+    color: #d32f2f;
+    font-size: 13px;
+    margin-top: 12px;
+}
+
+.app {
+    display: none;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 240px;
+    background: #101c35;
+    color: white;
+    position: fixed;
+    height: 100vh;
+    padding: 25px 15px;
+}
+
+.sidebar h2 {
+    padding: 0 10px 25px;
+    color: white;
+}
+
+.sidebar p {
+    color: #9eabc1;
+    font-size: 11px;
+    padding: 10px;
+    text-transform: uppercase;
+}
+
+.nav button {
+    width: 100%;
+    padding: 13px;
+    text-align: left;
+    background: transparent;
+    color: #d5ddeb;
+    border-radius: 6px;
+    margin-bottom: 5px;
+}
+
+.nav button:hover, .nav button.active {
+    background: #174d80;
+    color: white;
+}
+
+.logout {
+    position: absolute;
+    bottom: 25px;
+    left: 15px;
+    width: calc(100% - 30px);
+    padding: 12px;
+    background: #c0392b;
+    color: white;
+    border-radius: 6px;
+}
+
+.main {
+    margin-left: 240px;
+    padding: 30px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 15px;
+}
+
+.topbar h1 {
+    font-size: 25px;
+}
+
+.topbar span {
+    color: #777;
+    font-size: 13px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: white;
+    padding: 22px;
+    border-radius: 9px;
+    box-shadow: 0 2px 10px #00000008;
+}
+
+.card p {
+    color: #777;
+    font-size: 13px;
+}
+
+.card h2 {
+    margin-top: 12px;
+    font-size: 27px;
+    color: #174d80;
+}
+
+.panel {
+    background: white;
+    padding: 22px;
+    border-radius: 9px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px #00000008;
+}
+
+.panel h3 {
+    margin-bottom: 18px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    align-items: end;
+}
+
+.form-grid label {
+    margin-top: 0;
+}
+
+.form-grid button {
+    padding: 12px;
+    border-radius: 6px;
+    background: #174d80;
+    color: white;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 500px;
+}
+
+th, td {
+    padding: 13px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+    font-size: 13px;
+}
+
+th {
+    color: #777;
+    background: #f8f9fb;
+}
+
+.status {
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+}
+
+.present {
+    background: #e0f5e8;
+    color: #21864a;
+}
+
+.absent {
+    background: #fde8e8;
+    color: #c0392b;
+}
+
+.action {
+    padding: 8px 11px;
+    border-radius: 5px;
+    background: #174d80;
+    color: white;
+    font-size: 12px;
+}
+
+.danger {
+    background: #c0392b;
+}
+
+.search {
+    margin-bottom: 15px;
+    max-width: 350px;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+.small {
+    color: #777;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+@media(max-width: 700px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .sidebar h2 {
+        padding-bottom: 12px;
+    }
+
+    .nav {
+        display: flex;
+        overflow-x: auto;
+    }
+
+    .nav button {
+        white-space: nowrap;
+        width: auto;
+    }
+
+    .sidebar p, .logout {
+        display: none;
+    }
+
+    .main {
+        margin-left: 0;
+        padding: 18px;
+    }
+
+    .topbar h1 {
+        font-size: 20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-page" id="loginPage">
+    <div class="login-box">
+        <div class="logo">
+            <h1>SmartAttend</h1>
+            <p>Admiralty University of Nigeria</p>
+        </div>
+
+        <div class="tabs">
+            <button class="active" onclick="setRole('student',this)">Student</button>
+            <button onclick="setRole('lecturer',this)">Lecturer</button>
+            <button onclick="setRole('admin',this)">Admin</button>
+        </div>
+
+        <form onsubmit="login(event)">
+            <label>Username / Matric Number</label>
+            <input id="username" required placeholder="Enter username">
+
+            <label>Password</label>
+            <input id="password" type="password" required placeholder="Enter password">
+
+            <button class="primary" type="submit">Login to SmartAttend</button>
+            <p class="error" id="error"></p>
+        </form>
+
+        <div class="demo" id="demo">
+            <b>Demo Student</b><br>
+            Username: ADUN/FS/SEN/24/098<br>
+            Password: Student123
+        </div>
+    </div>
+</div>
+
+<div class="app" id="app">
+    <aside class="sidebar">
+        <h2>SmartAttend</h2>
+        <p id="roleLabel">Dashboard</p>
+        <div class="nav" id="navigation"></div>
+        <button class="logout" onclick="logout()">Logout</button>
+    </aside>
+
+    <main class="main">
+        <div class="topbar">
+            <div>
+                <h1 id="pageTitle">Dashboard</h1>
+                <span id="welcome"></span>
+            </div>
+            <span>ADUN</span>
+        </div>
+
+        <div id="dashboard" class="page active"></div>
+        <div id="students" class="page"></div>
+        <div id="courses" class="page"></div>
+        <div id="attendance" class="page"></div>
+        <div id="reports" class="page"></div>
+        <div id="myattendance" class="page"></div>
+    </main>
+</div>
+
+<script>
+const defaultStudents = [
+    {
+        matric:"ADUN/FS/SEN/24/098",
+        name:"Wisdom",
+        department:"Software Engineering",
+        level:"200",
+        password:"Student123"
+    },
+    {
+        matric:"ADUN/FS/COM/24/001",
+        name:"Steven",
+        department:"Computer Science",
+        level:"200",
+        password:"Student123"
+    }
+];
+
+const defaultCourses = [
+    {code:"MTH303", name:"Mathematics", lecturer:"Doc Bash Adam"},
+    {code:"MTH301", name:"Mathematics", lecturer:"Mrs Charity"},
+    {code:"SEN301", name:"Software Engineering", lecturer:"Mrs Ada"},
+    {code:"SEN399", name:"Software Engineering", lecturer:"Dr Puis"},
+    {code:"GST301", name:"General Studies", lecturer:"Mr Samuel"},
+    {code:"GST311", name:"General Studies", lecturer:"Mr Samuel"},
+    {code:"COS301", name:"Computer Science", lecturer:"Doc Bash Adam"},
+    {code:"COS310", name:"Computer Science", lecturer:"Mrs Ada"}
+];
+
+const defaultLecturers = [
+    {username:"docbash", name:"Doc Bash Adam", password:"Lecturer123"},
+    {username:"charity", name:"Mrs Charity", password:"Lecturer123"},
+    {username:"ada", name:"Mrs Ada", password:"Lecturer123"},
+    {username:"puis", name:"Dr Puis", password:"Lecturer123"},
+    {username:"samuel", name:"Mr Samuel", password:"Lecturer123"}
+];
+
+let students = JSON.parse(localStorage.getItem("sa_students")) || defaultStudents;
+let courses = JSON.parse(localStorage.getItem("sa_courses")) || defaultCourses;
+let lecturers = JSON.parse(localStorage.getItem("sa_lecturers")) || defaultLecturers;
+let records = JSON.parse(localStorage.getItem("sa_records")) || [];
+
+let role = "student";
+let user = null;
+let currentPage = "dashboard";
+
+function save() {
+    localStorage.setItem("sa_students", JSON.stringify(students));
+    localStorage.setItem("sa_courses", JSON.stringify(courses));
+    localStorage.setItem("sa_lecturers", JSON.stringify(lecturers));
+    localStorage.setItem("sa_records", JSON.stringify(records));
+}
+
+function setRole(value, button) {
+    role = value;
+    document.querySelectorAll(".tabs button").forEach(b => b.classList.remove("active"));
+    button.classList.add("active");
+
+    const demo = document.getElementById("demo");
+
+    if(value === "student") {
+        demo.innerHTML = "<b>Demo Student</b><br>Username: ADUN/FS/SEN/24/098<br>Password: Student123";
+    } else if(value === "lecturer") {
+        demo.innerHTML = "<b>Demo Lecturer</b><br>Username: docbash<br>Password: Lecturer123";
+    } else {
+        demo.innerHTML = "<b>Demo Admin</b><br>Username: admin<br>Password: Admin123";
+    }
+
+    document.getElementById("error").textContent = "";
+}
+
+function login(event) {
+    event.preventDefault();
+
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+
+    let account = null;
+
+    if(role === "student") {
+        account = students.find(s => s.matric.toLowerCase() === username.toLowerCase() && s.password === password);
+    }
+
+    if(role === "lecturer") {
+        account = lecturers.find(l => l.username.toLowerCase() === username.toLowerCase() && l.password === password);
+    }
+
+    if(role === "admin" && username === "admin" && password === "Admin123") {
+        account = {name:"System Administrator", username:"admin"};
+    }
+
+    if(!account) {
+        document.getElementById("error").textContent = "Incorrect username or password.";
+        return;
+    }
+
+    user = account;
+    sessionStorage.setItem("sa_user", JSON.stringify(user));
+    sessionStorage.setItem("sa_role", role);
+    startApp();
+}
+
+function startApp() {
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("app").style.display = "block";
+    document.getElementById("welcome").textContent = "Welcome, " + user.name;
+    document.getElementById("roleLabel").textContent = role + " panel";
+
+    const menus = [
+        ["Dashboard","dashboard"]
+    ];
+
+    if(role === "admin") {
+        menus.push(["Students","students"],["Courses","courses"],["Reports","reports"]);
+    }
+
+    if(role === "lecturer") {
+        menus.push(["My Courses","courses"],["Take Attendance","attendance"],["Reports","reports"]);
+    }
+
+    if(role === "student") {
+        menus.push(["My Attendance","myattendance"],["My Courses","courses"]);
+    }
+
+    document.getElementById("navigation").innerHTML = menus.map(item =>
+        `<button onclick="showPage('${item[1]}')">${item[0]}</button>`
+    ).join("");
+
+    showPage("dashboard");
+}
+
+function logout() {
+    user = null;
+    sessionStorage.removeItem("sa_user");
+    sessionStorage.removeItem("sa_role");
+    document.getElementById("app").style.display = "none";
+    document.getElementById("loginPage").style.display = "flex";
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+}
+
+function showPage(page) {
+    currentPage = page;
+
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    document.getElementById(page).classList.add("active");
+
+    document.getElementById("pageTitle").textContent =
+        page === "myattendance" ? "My Attendance" :
+        page.charAt(0).toUpperCase() + page.slice(1);
+
+    document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
+    const activeButton = [...document.querySelectorAll(".nav button")].find(b =>
+        b.getAttribute("onclick").includes("'" + page + "'")
+    );
+    if(activeButton) activeButton.classList.add("active");
+
+    if(page === "dashboard") renderDashboard();
+    if(page === "students") renderStudents();
+    if(page === "courses") renderCourses();
+    if(page === "attendance") renderAttendance();
+    if(page === "reports") renderReports();
+    if(page === "myattendance") renderMyAttendance();
+}
+
+function renderDashboard() {
+    let present = records.filter(r => r.status === "Present").length;
+    let total = records.length;
+
+    document.getElementById("dashboard").innerHTML = `
+        <div class="cards">
+            <div class="card"><p>Total Students</p><h2>${students.length}</h2></div>
+            <div class="card"><p>Total Courses</p><h2>${courses.length}</h2></div>
+            <div class="card"><p>Total Lecturers</p><h2>${lecturers.length}</h2></div>
+            <div class="card"><p>Attendance Records</p><h2>${total}</h2></div>
+        </div>
+        <div class="panel">
+            <h3>SmartAttend Overview</h3>
+            <p>Welcome to the SmartAttend attendance management system.</p>
+            <p class="small">Manage student records, courses and attendance from your dashboard.</p>
+        </div>
+        ${role === "student" ? `
+        <div class="panel">
+            <h3>Your Attendance Summary</h3>
+            <h2>${getPercentage(user.matric)}%</h2>
+            <p class="small">Overall attendance percentage</p>
+        </div>` : ""}
+        ${role === "lecturer" ? `
+        <div class="panel">
+            <h3>Your Assigned Courses</h3>
+            ${courses.filter(c => c.lecturer === user.name).map(c => `<p>${c.code} - ${c.name}</p>`).join("") || "No assigned courses yet."}
+        </div>` : ""}
+    `;
+}
+
+function renderStudents() {
+    document.getElementById("students").innerHTML = `
+        <div class="panel">
+            <h3>Add New Student</h3>
+            <form class="form-grid" onsubmit="addStudent(event)">
+                <div><label>Matric Number</label><input id="newMatric" required placeholder="ADUN/FS/COM/24/002"></div>
+                <div><label>Full Name</label><input id="newName" required></div>
+                <div><label>Department</label><input id="newDepartment" required></div>
+                <div><label>Level</label><select id="newLevel"><option>100</option><option>200</option><option>300</option><option>400</option><option>500</option></select></div>
+                <div><label>Password</label><input id="newPassword" required value="Student123"></div>
+                <button type="submit">Add Student</button>
+            </form>
+        </div>
+        <div class="panel">
+            <h3>Student Records</h3>
+            <input class="search" placeholder="Search students..." oninput="filterTable(this,'studentTable')">
+            <div class="table-wrap">
+            <table id="studentTable">
+                <tr><th>Matric Number</th><th>Name</th><th>Department</th><th>Level</th><th>Action</th></tr>
+                ${students.map((s,i)=>`
+                <tr>
+                    <td>${s.matric}</td><td>${s.name}</td><td>${s.department}</td><td>${s.level}</td>
+                    <td><button class="action danger" onclick="deleteStudent(${i})">Delete</button></td>
+                </tr>`).join("")}
+            </table>
+            </div>
+        </div>
+    `;
+}
+
+function addStudent(event) {
+    event.preventDefault();
+
+    const matric = document.getElementById("newMatric").value.trim();
+
+    if(students.some(s => s.matric.toLowerCase() === matric.toLowerCase())) {
+        alert("This matric number already exists.");
+        return;
+    }
+
+    students.push({
+        matric,
+        name:document.getElementById("newName").value.trim(),
+        department:document.getElementById("newDepartment").value.trim(),
+        level:document.getElementById("newLevel").value,
+        password:document.getElementById("newPassword").value
+    });
+
+    save();
+    renderStudents();
+    alert("Student added successfully.");
+}
+
+function deleteStudent(index) {
+    if(!confirm("Delete this student?")) return;
+    students.splice(index,1);
+    save();
+    renderStudents();
+}
+
+function renderCourses() {
+    const canManage = role === "admin";
+
+    document.getElementById("courses").innerHTML = `
+        ${canManage ? `
+        <div class="panel">
+            <h3>Add Course</h3>
+            <form class="form-grid" onsubmit="addCourse(event)">
+                <div><label>Course Code</label><input id="courseCode" required placeholder="SEN301"></div>
+                <div><label>Course Name</label><input id="courseName" required></div>
+                <div><label>Assign Lecturer</label>
+                    <select id="courseLecturer">
+                    ${lecturers.map(l=>`<option value="${l.name}">${l.name}</option>`).join("")}
+                    </select>
+                </div>
+                <button type="submit">Add Course</button>
+            </form>
+        </div>` : ""}
+        <div class="panel">
+            <h3>${role === "student" ? "Available Courses" : "Course Management"}</h3>
+            <div class="table-wrap">
+            <table>
+                <tr><th>Course Code</th><th>Course Name</th><th>Lecturer</th>${canManage?"<th>Action</th>":""}</tr>
+                ${courses.filter(c => role !== "lecturer" || c.lecturer === user.name).map((c,i)=>`
+                <tr><td>${c.code}</td><td>${c.name}</td><td>${c.lecturer}</td>
+                ${canManage?`<td><button class="action danger" onclick="deleteCourse(${i})">Delete</button></td>`:""}
+                </tr>`).join("")}
+            </table>
+            </div>
+        </div>
+    `;
+}
+
+function addCourse(event) {
+    event.preventDefault();
+    const code = document.getElementById("courseCode").value.trim().toUpperCase();
+
+    if(courses.some(c => c.code === code)) {
+        alert("Course already exists.");
+        return;
+    }
+
+    courses.push({
+        code,
+        name:document.getElementById("courseName").value.trim(),
+        lecturer:document.getElementById("courseLecturer").value
+    });
+
+    save();
+    renderCourses();
+}
+
+function deleteCourse(index) {
+    if(!confirm("Delete this course?")) return;
+    courses.splice(index,1);
+    save();
+    renderCourses();
+}
+
+function renderAttendance() {
+    const myCourses = courses.filter(c => c.lecturer === user.name);
+
+    document.getElementById("attendance").innerHTML = `
+        <div class="panel">
+            <h3>Take Attendance</h3>
+            <label>Select Course</label>
+            <select id="attendanceCourse">
+                ${myCourses.map(c=>`<option value="${c.code}">${c.code} - ${c.name}</option>`).join("")}
+            </select>
+            <label>Attendance Date</label>
+            <input type="date" id="attendanceDate" value="${new Date().toISOString().slice(0,10)}">
+            <button class="primary" onclick="loadAttendance()">Load Student List</button>
+        </div>
+        <div id="attendanceRoster"></div>
+    `;
+
+    if(myCourses.length === 0) {
+        document.getElementById("attendanceRoster").innerHTML = "<div class='panel'>No courses have been assigned to you.</div>";
+    }
+}
+
+function loadAttendance() {
+    const code = document.getElementById("attendanceCourse").value;
+    const date = document.getElementById("attendanceDate").value;
+
+    if(!code || !date) {
+        alert("Select a course and date.");
+        return;
+    }
+
+    const existing = records.filter(r => r.course === code && r.date === date);
+
+    document.getElementById("attendanceRoster").innerHTML = `
+        <div class="panel">
+            <h3>Student Attendance - ${code}</h3>
+            <div class="table-wrap">
+            <table>
+                <tr><th>Student</th><th>Matric Number</th><th>Status</th></tr>
+                ${students.map((s,i)=>{
+                    const old = existing.find(r=>r.matric===s.matric);
+                    return `
+                    <tr>
+                        <td>${s.name}</td>
+                        <td>${s.matric}</td>
+                        <td>
+                            <select id="status${i}">
+                                <option ${old?.status==="Present"?"selected":""}>Present</option>
+                                <option ${old?.status==="Absent"?"selected":""}>Absent</option>
+                            </select>
+                        </td>
+                    </tr>`;
+                }).join("")}
+            </table>
+            </div>
+            <button class="primary" onclick="saveAttendance('${code}','${date}')">Save Attendance</button>
+        </div>
+    `;
+}
+
+function saveAttendance(code,date) {
+    if(!confirm("Save attendance for this course and date?")) return;
+
+    records = records.filter(r => !(r.course === code && r.date === date));
+
+    students.forEach((s,i)=>{
+        const status = document.getElementById("status"+i).value;
+        records.push({
+            matric:s.matric,
+            name:s.name,
+            course:code,
+            date,
+            status,
+            lecturer:user.name,
+            time:new Date().toLocaleTimeString()
+        });
+    });
+
+    save();
+    alert("Attendance saved successfully.");
+    renderAttendance();
+}
+
+function getPercentage(matric) {
+    const mine = records.filter(r=>r.matric===matric);
+    if(mine.length===0) return 0;
+    const present = mine.filter(r=>r.status==="Present").length;
+    return Math.round((present/mine.length)*100);
+}
+
+function renderMyAttendance() {
+    const mine = records.filter(r=>r.matric===user.matric);
+
+    document.getElementById("myattendance").innerHTML = `
+        <div class="cards">
+            <div class="card"><p>Attendance Percentage</p><h2>${getPercentage(user.matric)}%</h2></div>
+            <div class="card"><p>Present</p><h2>${mine.filter(r=>r.status==="Present").length}</h2></div>
+            <div class="card"><p>Absent</p><h2>${mine.filter(r=>r.status==="Absent").length}</h2></div>
+        </div>
+        <div class="panel">
+            <h3>My Attendance History</h3>
+            <div class="table-wrap">
+            <table>
+                <tr><th>Course</th><th>Date</th><th>Lecturer</th><th>Status</th></tr>
+                ${mine.map(r=>`
+                <tr>
+                    <td>${r.course}</td><td>${r.date}</td><td>${r.lecturer}</td>
+                    <td><span class="status ${r.status==="Present"?"present":"absent"}">${r.status}</span></td>
+                </tr>`).join("") || "<tr><td colspan='4'>No attendance records yet.</td></tr>"}
+            </table>
+            </div>
+        </div>
+    `;
+}
+
+function renderReports() {
+    let visible = role === "lecturer" ? records.filter(r=>r.lecturer===user.name) : records;
+
+    document.getElementById("reports").innerHTML = `
+        <div class="panel">
+            <h3>Attendance Reports</h3>
+            <input class="search" placeholder="Search by student, matric or course..." oninput="filterTable(this,'reportTable')">
+            <div class="table-wrap">
+            <table id="reportTable">
+                <tr><th>Student</th><th>Matric</th><th>Course</th><th>Date</th><th>Lecturer</th><th>Status</th></tr>
+                ${visible.map(r=>`
+                <tr>
+                    <td>${r.name}</td><td>${r.matric}</td><td>${r.course}</td><td>${r.date}</td><td>${r.lecturer}</td><td>${r.status}</td>
+                </tr>`).join("")}
+            </table>
+            </div>
+            <button class="primary" onclick="exportCSV()">Download CSV Report</button>
+        </div>
+    `;
+}
+
+function exportCSV() {
+    const visible = role === "lecturer" ? records.filter(r=>r.lecturer===user.name) : records;
+
+    const rows = [
+        ["Student","Matric Number","Course","Date","Lecturer","Status"],
+        ...visible.map(r=>[r.name,r.matric,r.course,r.date,r.lecturer,r.status])
+    ];
+
+    const csv = rows.map(row=>row.map(value=>'"'+String(value).replace(/"/g,'""')+'"').join(",")).join("\n");
+    const blob = new Blob([csv],{type:"text/csv"});
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "SmartAttend_Report.csv";
+    link.click();
+    URL.revokeObjectURL(url);
+}
+
+function filterTable(input,tableId) {
+    const query = input.value.toLowerCase();
+    const rows = document.querySelectorAll("#"+tableId+" tr");
+
+    rows.forEach((row,index)=>{
+        if(index===0) return;
+        row.style.display = row.textContent.toLowerCase().includes(query) ? "" : "none";
+    });
+}
+
+const savedUser = sessionStorage.getItem("sa_user");
+const savedRole = sessionStorage.getItem("sa_role");
+
+if(savedUser && savedRole) {
+    user = JSON.parse(savedUser);
+    role = savedRole;
+    startApp();
+}
+
+save();
+</script>
+
+</body>
+</html>
